@@ -15,6 +15,7 @@ load_dotenv(BASE_DIR / '.env')
 # SECURITY
 # ==================================================
 SECRET_KEY = os.getenv("SECRET_KEY")
+
 DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
@@ -47,7 +48,11 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 # ==================================================
 MIDDLEWARE = [
+
+    # 🔥 WhiteNoise (أساسي لحل مشكلة admin)
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,11 +91,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mashailm.wsgi.application'
 
 # ==================================================
-# DATABASE CONFIG
+# DATABASE
 # ==================================================
-
 if DEBUG:
-    # 🔵 DEVELOPMENT
     DATABASES = {
         'default': {
             'ENGINE': os.getenv("DEV_DB_ENGINE"),
@@ -98,7 +101,6 @@ if DEBUG:
         }
     }
 else:
-    # 🔴 PRODUCTION
     DATABASES = {
         'default': {
             'ENGINE': os.getenv("PROD_DB_ENGINE"),
@@ -108,9 +110,6 @@ else:
             'HOST': os.getenv("PROD_DB_HOST"),
             'PORT': os.getenv("PROD_DB_PORT"),
             'CONN_MAX_AGE': 600,
-            'OPTIONS': {
-                'sslmode': 'disable'
-            }
         }
     }
 
@@ -133,18 +132,17 @@ USE_I18N = True
 USE_TZ = True
 
 # ==================================================
-# STATIC FILES
+# STATIC FILES (WhiteNoise)
 # ==================================================
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# مهم جدًا للإنتاج
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # ==================================================
-# CLOUDINARY CONFIG
+# CLOUDINARY
 # ==================================================
 cloudinary.config(
     cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
@@ -154,6 +152,7 @@ cloudinary.config(
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 MEDIA_URL = '/media/'
 
 # ==================================================
