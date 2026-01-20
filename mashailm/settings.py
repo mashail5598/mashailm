@@ -1,25 +1,23 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-
 # ==================================================
-# BASE DIR
+# LOAD ENV
 # ==================================================
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / '.env')
 
 # ==================================================
 # SECURITY
 # ==================================================
-SECRET_KEY = '+wtcpj3rf%+!j-$c*6ew8-+8vj5eou1nxu@7z52zd*cj9a45th'
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG") == "True"
 
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 # ==================================================
 # APPLICATIONS
@@ -45,7 +43,6 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
 ]
 
-
 # ==================================================
 # MIDDLEWARE
 # ==================================================
@@ -59,12 +56,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 # ==================================================
 # URL CONFIG
 # ==================================================
 ROOT_URLCONF = 'mashailm.urls'
-
 
 # ==================================================
 # TEMPLATES
@@ -85,23 +80,39 @@ TEMPLATES = [
     },
 ]
 
-
 # ==================================================
 # WSGI
 # ==================================================
 WSGI_APPLICATION = 'mashailm.wsgi.application'
 
+# ==================================================
+# DATABASE CONFIG
+# ==================================================
 
-# ==================================================
-# DATABASE
-# ==================================================
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    # 🔵 DEVELOPMENT
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv("DEV_DB_ENGINE"),
+            'NAME': BASE_DIR / os.getenv("DEV_DB_NAME"),
+        }
     }
-}
-
+else:
+    # 🔴 PRODUCTION
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv("PROD_DB_ENGINE"),
+            'NAME': os.getenv("PROD_DB_NAME"),
+            'USER': os.getenv("PROD_DB_USER"),
+            'PASSWORD': os.getenv("PROD_DB_PASSWORD"),
+            'HOST': os.getenv("PROD_DB_HOST"),
+            'PORT': os.getenv("PROD_DB_PORT"),
+            'CONN_MAX_AGE': 600,
+            'OPTIONS': {
+                'sslmode': 'disable'
+            }
+        }
+    }
 
 # ==================================================
 # PASSWORD VALIDATION
@@ -113,7 +124,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
 # ==================================================
 # LANGUAGE & TIME
 # ==================================================
@@ -121,7 +131,6 @@ LANGUAGE_CODE = 'ar'
 TIME_ZONE = 'Asia/Riyadh'
 USE_I18N = True
 USE_TZ = True
-
 
 # ==================================================
 # STATIC FILES
@@ -134,28 +143,23 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-
 # ==================================================
 # CLOUDINARY CONFIG
 # ==================================================
 cloudinary.config(
-    cloud_name="dkwdrojta",
-    api_key="467348972811799",
-    api_secret="S4u2YUHfmJZLzur_-AVr6CdguAQ",
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
     secure=True
 )
 
-# استخدام Cloudinary كمخزن ميديا افتراضي
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 MEDIA_URL = '/media/'
-
 
 # ==================================================
 # DEFAULT PRIMARY KEY
 # ==================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # ==================================================
 # CUSTOM USER MODEL
