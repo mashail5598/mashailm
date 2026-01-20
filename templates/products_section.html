@@ -1,0 +1,63 @@
+<section style="padding:60px;background:#fdfaf6;">
+
+    <h2 style="
+        text-align:center;
+        color:#7b1e3a;
+        margin-bottom:40px;
+        font-size:28px;
+    ">
+        منتجاتنا 🌸
+    </h2>
+
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+        gap:30px;
+    ">
+
+        {% for product in products %}
+        <div style="
+            background:#fff;
+            border-radius:14px;
+            overflow:hidden;
+            box-shadow:0 10px 25px rgba(0,0,0,.08);
+        ">
+
+            <img src="{{ product.image.url }}"
+                 style="width:100%;height:220px;object-fit:cover;">
+
+            <div style="padding:18px;text-align:center;">
+
+                <h3 style="color:#2f3e2f;">
+                    {{ product.name }}
+                </h3>
+
+                <div style="
+                    margin:10px 0;
+                    font-weight:bold;
+                    color:#7b1e3a;
+                ">
+                    {{ product.price }} ر.س
+                </div>
+
+                <a href="#"
+                   style="
+                    background:#7b1e3a;
+                    color:#fff;
+                    padding:8px 20px;
+                    border-radius:8px;
+                    text-decoration:none;
+                   ">
+                    أضف إلى السلة
+                </a>
+
+            </div>
+        </div>
+        {% empty %}
+            <p style="text-align:center;width:100%;">
+                لا توجد منتجات حالياً
+            </p>
+        {% endfor %}
+
+    </div>
+</section>

@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>متجر منتجات الشعر</title>
+</head>
+
+<body style="margin:0;background:#f3efe6;font-family:Tahoma;">
+
+{% include 'header.html' %}
+
+<!-- ================== البنر ================== -->
+<section style="padding:80px 60px;text-align:center;">
+    <h1 style="color:#2f3e2f;font-size:36px;">
+        جمال شعرك يبدأ من هنا ✨
+    </h1>
+
+    <p style="color:#6b4f3f;font-size:18px;margin-top:20px;">
+        منتجات طبيعية مختارة بعناية لتغذية وتقوية الشعر
+    </p>
+
+    <a href="{% url 'store_home' %}"
+       style="
+        display:inline-block;
+        margin-top:30px;
+        background:#7b1e3a;
+        color:#fff;
+        padding:14px 30px;
+        border-radius:8px;
+        text-decoration:none;
+        font-size:16px;
+       ">
+        تسوق الآن
+    </a>
+</section>
+
+<!-- ================== المنتجات ================== -->
+{% include 'products_section.html' %}
+
+<!-- ================== المميزات ================== -->
+<section style="
+    padding:60px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:30px;
+">
+
+    <div style="background:#fff;padding:25px;border-radius:12px;">
+        🌿 منتجات طبيعية
+    </div>
+
+    <div style="background:#fff;padding:25px;border-radius:12px;">
+        💆‍♀️ عناية متكاملة
+    </div>
+
+    <div style="background:#fff;padding:25px;border-radius:12px;">
+        ✨ نتائج فعالة
+    </div>
+
+</section>
+
+{% include 'footer.html' %}
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<header>
+    <style>
+        header {
+            background: #2f3e2f;
+            color: #f3efe6;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: Tahoma;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #f3efe6;
+        }
+
+        nav a {
+            color: #f3efe6;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #d8c7b2;
+        }
+
+        .auth-buttons a,
+        .auth-buttons span {
+            background: #7b1e3a;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            margin-right: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .auth-buttons span {
+            background: transparent;
+            color: #f3efe6;
+            font-weight: bold;
+        }
+
+        .auth-buttons a:hover {
+            opacity: 0.85;
+        }
+    </style>
+
+    <div class="logo">Hair Beauty</div>
+
+    <nav>
+        <a href="/">الرئيسية</a>
+        <a href="/store/">المنتجات</a>
+        <a href="#">العناية بالشعر</a>
+        <a href="#">العروض</a>
+    </nav>
+
+    <div class="auth-buttons">
+
+        {% if user.is_authenticated %}
+
+            <span>مرحبًا {{ user.username }} 🌸</span>
+            <a href="{% url 'logout' %}">تسجيل خروج</a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}">تسجيل الدخول</a>
+            <a href="{% url 'register' %}">إنشاء حساب</a>
+
+        {% endif %}
+
+    </div>
+</header>

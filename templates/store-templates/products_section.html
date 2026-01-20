@@ -1,0 +1,78 @@
+<section style="padding:60px;">
+
+    <h2 style="
+        text-align:center;
+        color:#7b1e3a;
+        font-size:28px;
+        margin-bottom:40px;
+    ">
+        منتجاتنا المميزة 🌸
+    </h2>
+
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+        gap:30px;
+    ">
+
+        {% for product in products %}
+        <div style="
+            background:#fff;
+            border-radius:14px;
+            overflow:hidden;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+            transition:.3s;
+        ">
+
+            <img
+                src="{{ product.image.url }}"
+                style="
+                    width:100%;
+                    height:220px;
+                    object-fit:cover;
+                "
+            >
+
+            <div style="padding:18px;text-align:center;">
+
+                <h3 style="color:#2f3e2f;margin-bottom:10px;">
+                    {{ product.name }}
+                </h3>
+
+                <p style="color:#6b4f3f;font-size:14px;">
+                    {{ product.description|truncatechars:60 }}
+                </p>
+
+                <div style="
+                    margin:12px 0;
+                    font-weight:bold;
+                    color:#7b1e3a;
+                    font-size:16px;
+                ">
+                    {{ product.price }} ر.س
+                </div>
+
+                <a href="#"
+                   style="
+                    display:inline-block;
+                    background:linear-gradient(45deg,#7b1e3a,#b23a6f);
+                    color:#fff;
+                    padding:10px 22px;
+                    border-radius:8px;
+                    text-decoration:none;
+                    font-size:14px;
+                   ">
+                    أضف إلى السلة
+                </a>
+
+            </div>
+        </div>
+        {% empty %}
+            <p style="grid-column:1/-1;text-align:center;">
+                لا توجد منتجات حالياً
+            </p>
+        {% endfor %}
+
+    </div>
+
+</section>
