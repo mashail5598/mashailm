@@ -20,6 +20,32 @@ DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
+# 🔐 ضروري جدًا لـ Render (HTTPS Proxy)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# 🔥 مؤقت — يسمح برؤية الخطأ في Logs فقط
+if not DEBUG:
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+            },
+        },
+        "root": {
+            "handlers": ["console"],
+            "level": "ERROR",
+        },
+    }
+
+# ==================================================
+# CSRF (إجباري في الإنتاج)
+# ==================================================
+CSRF_TRUSTED_ORIGINS = [
+    "https://mashailm.onrender.com",
+]
+
 # ==================================================
 # APPLICATIONS
 # ==================================================
@@ -49,7 +75,7 @@ INSTALLED_APPS = [
 # ==================================================
 MIDDLEWARE = [
 
-    # 🔥 WhiteNoise (أساسي لحل مشكلة admin)
+    # 🔥 WhiteNoise
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
@@ -132,14 +158,14 @@ USE_I18N = True
 USE_TZ = True
 
 # ==================================================
-# STATIC FILES (WhiteNoise)
+# STATIC FILES
 # ==================================================
 STATIC_URL = '/static/'
-
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# مهم جدًا للإنتاج
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = (
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
 
 # ==================================================
 # CLOUDINARY
@@ -152,7 +178,6 @@ cloudinary.config(
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 MEDIA_URL = '/media/'
 
 # ==================================================
@@ -161,6 +186,6 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ==================================================
-# CUSTOM USER MODEL
+# CUSTOM USER
 # ==================================================
 AUTH_USER_MODEL = 'accounts.User'
